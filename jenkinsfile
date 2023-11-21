@@ -3,16 +3,17 @@ pipeline {
   environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub')
     }
-    stages {
-        stage ("deploy") {
+    stage('Login en Docker') {
             steps {
-                              script {
+                script {
                     // Utiliza las credenciales de Docker que creaste en Jenkins
-                    docker.withRegistry('', DOCKERHUB_CREDENTIALS) {  
-            	sh 'docker pull httpd/latest'
-            	sh 'docker run --name m15-httpd -d -p 8080:8080 httpd:latest'
+                    docker.withRegistry('', DOCKERHUB_CREDENTIALS) {
+                        // Aquí puedes realizar operaciones que requieran autenticación de Docker
+                        // Por ejemplo, docker.build, docker.push, etc.
+                        sh 'docker pull httpd/latest'
+            	        sh 'docker run --name m15-httpd -d -p 8080:8080 httpd:latest'
+
+                    }
+                }
             }
         }
-    }
-}
-}
