@@ -3,7 +3,6 @@ pipeline {
     stages {
         stage ("deploy") {
             steps {
-                sh 'docker stop appjenkins'
             	sh 'docker pull httpd/latest'
             	sh 'docker run --name m15-httpd -d -p 8080:8080 httpd:latest'
             }
