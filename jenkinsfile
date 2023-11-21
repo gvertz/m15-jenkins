@@ -3,6 +3,9 @@ pipeline {
     stages {
         stage ("deploy") {
             steps {
+                sh 'docker login'
+                sh 'guillermovertz'
+                sh 'Tecnica1239'
             	sh 'docker pull httpd/latest'
             	sh 'docker run --name m15-httpd -d -p 8080:8080 httpd:latest'
             }
