@@ -1,19 +1,39 @@
 pipeline {
     agent any
-  environment {
+
+    environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub')
     }
-    stage('Login en Docker') {
+
+    stages {
+        stage('Clonar Repositorio') {
+            steps {
+                // Clona tu repositorio desde el sistema de control de versiones
+                // git 'https://github.com/gvertz/m15-jenkins'
+            }
+        }
+
+        stage('Login en Docker') {
             steps {
                 script {
                     // Utiliza las credenciales de Docker que creaste en Jenkins
                     docker.withRegistry('', DOCKERHUB_CREDENTIALS) {
                         // Aquí puedes realizar operaciones que requieran autenticación de Docker
                         // Por ejemplo, docker.build, docker.push, etc.
-                        sh 'docker pull httpd/latest'
-            	        sh 'docker run --name m15-httpd -d -p 8080:8080 httpd:latest'
-
                     }
                 }
             }
         }
+
+        stage('Build y Despliegue de la Imagen Docker') {
+            steps {
+                script {
+                    // Realiza las acciones necesarias para construir y desplegar tu imagen Docker
+                    // Puedes utilizar comandos de Docker o Jenkins Docker Pipeline steps
+                }
+            }
+        }
+
+        // Agrega más etapas según sea necesario
+    }
+}
