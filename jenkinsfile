@@ -7,6 +7,7 @@ pipeline {
                 script {
                     // Paso a) Construcción de la imagen
                     sh 'sudo su'
+                    sh 'cd /vagrant'
                     sh 'docker build -t guillermovertz/httpd:latest .'
                 }
             }
