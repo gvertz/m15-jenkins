@@ -1,39 +1,50 @@
 pipeline {
     agent any
-
-    environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+    environment{
+        DOCKERHUB_CREDENTIALS = credentials ('dockerhub')
+        RepoDockerHub = 'guillermovertz'
+        NameContainer = 'm15'
     }
-
     stages {
-        stage('Clonar Repositorio') {
+        stage('Build Image') {
             steps {
-                // Clona tu repositorio desde el sistema de control de versiones
-                // git 'https://github.com/gvertz/m15-jenkins'
+                script {
+                    // Paso a) Construcción de la imagen
+                    docker.build 'httpd:latest'
+                }
             }
         }
 
-        stage('Login en Docker') {
+        stage('Run Container') {
             steps {
                 script {
-                    // Utiliza las credenciales de Docker que creaste en Jenkins
-                    docker.withRegistry('', DOCKERHUB_CREDENTIALS) {
-                        // Aquí puedes realizar operaciones que requieran autenticación de Docker
-                        // Por ejemplo, docker.build, docker.push, etc.
+                    // Paso b) Ejecución de un contenedor usando esa imagen
+                    docker.image('httpd:latest').run('-p 8080:8080 --name http-m15')
+                }
+            }
+        }
+
+        stage('Push Image') {
+            steps {
+                script {
+                    // Paso c) Subir esa imagen a un repositorio de imágenes
+                    docker.withRegistry('https://hub.docker.com/repository/docker/guillermovertz/m15/general', 'dockerhub') {
+                        docker.image('httpd-m15:latest').push()
                     }
                 }
             }
         }
+    }
 
-        stage('Build y Despliegue de la Imagen Docker') {
-            steps {
-                script {
-                    // Realiza las acciones necesarias para construir y desplegar tu imagen Docker
-                    // Puedes utilizar comandos de Docker o Jenkins Docker Pipeline steps
-                }
+    post {
+        always {
+            // Limpieza: detener y eliminar el contenedor después de ejecutar el pipeline
+            script {
+                docker.image('httpd-m15:latest').stop()
+                docker.image('httpd-m15:latest').remove()
             }
         }
-
-        // Agrega más etapas según sea necesario
+    }
+}
     }
 }
