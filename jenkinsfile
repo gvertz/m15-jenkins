@@ -8,7 +8,7 @@ pipeline {
                     // Paso a) Construcción de la imagen
                     sh 'sudo su'
                     sh 'cd /vagrant'
-                    sh 'docker build -t guillermovertz/httpd:latest .'
+                    sh 'docker build -t guillermovertz/httpd-m15:latest .'
                 }
             }
         }
@@ -17,7 +17,7 @@ pipeline {
             steps {
                 script {
                     // Paso b) Ejecución de un contenedor usando esa imagen
-                    sh 'docker run -d --name m15-jenkins guillermovertz/httpd:latest'
+                    sh 'docker run -d --name m15-jenkins -p 8081:80 guillermovertz/httpd-m15:latest'
                 }
             }
         }
