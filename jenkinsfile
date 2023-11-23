@@ -1,50 +1,33 @@
 pipeline {
     agent any
-    environment{
-        DOCKERHUB_CREDENTIALS = credentials ('dockerhub')
-        RepoDockerHub = 'guillermovertz'
-        NameContainer = 'm15'
-    }
+
     stages {
-        stage('Build Image') {
+        stage('Construcción de la imagen') {
             steps {
                 script {
                     // Paso a) Construcción de la imagen
-                    docker.build 'httpd:latest'
+                    sh 'docker build -t guillermovertz/httpd:latest .'
                 }
             }
         }
 
-        stage('Run Container') {
+        stage('Ejecución del contenedor') {
             steps {
                 script {
                     // Paso b) Ejecución de un contenedor usando esa imagen
-                    docker.image('httpd:latest').run('-p 8080:8080 --name http-m15')
+                    sh 'docker run -d --name m15-jenkins guillermovertz/httpd:latest'
                 }
             }
         }
 
-        stage('Push Image') {
+        stage('Subir la imagen a DockerHub') {
             steps {
                 script {
-                    // Paso c) Subir esa imagen a un repositorio de imágenes
-                    docker.withRegistry('https://hub.docker.com/repository/docker/guillermovertz/m15/general', 'dockerhub') {
-                        docker.image('httpd-m15:latest').push()
-                    }
+                    // Paso c) Subir esa imagen a un repositorio de imágenes (Dockerhub u otros)
+                    sh 'docker login -u guillermovertz -p Tecnica1239'
+                    sh 'docker push guillermovertz/httpd:latest'
                 }
             }
         }
-    }
-
-    post {
-        always {
-            // Limpieza: detener y eliminar el contenedor después de ejecutar el pipeline
-            script {
-                docker.image('httpd-m15:latest').stop()
-                docker.image('httpd-m15:latest').remove()
-            }
-        }
-    }
-}
     }
 }
