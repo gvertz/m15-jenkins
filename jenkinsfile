@@ -6,7 +6,7 @@ pipeline {
             steps {
                 script {
                     // Paso a) Construcción de la imagen
-                    sh 'whoami'
+                    sh 'sudo su'
                     sh 'docker build -t guillermovertz/httpd:latest .'
                 }
             }
