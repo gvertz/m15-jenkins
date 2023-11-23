@@ -1,17 +1,17 @@
 pipeline {
     agent any
 
-    stages {
-        stage('Construcción de la imagen') {
-            steps {
-                script {
-                    // Paso a) Construcción de la imagen
-                    sh 'sudo su'
-                    sh 'cd /vagrant'
-                    sh 'docker build -t guillermovertz/httpd-m15:latest .'
-                }
-            }
-        }
+   // stages {
+   //     stage('Construcción de la imagen') {
+   //         steps {
+   //             script {
+   //                 // Paso a) Construcción de la imagen
+   //                 sh 'sudo su'
+   //                 sh 'cd /vagrant'
+   //                 sh 'docker build -t guillermovertz/httpd-m15:latest .'
+   //             }
+   //         }
+   //     }
 
         stage('Ejecución del contenedor') {
             steps {
