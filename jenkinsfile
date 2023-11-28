@@ -28,7 +28,8 @@ pipeline {
             steps {
                 script {
                     // Paso c) Subir esa imagen a un repositorio de imágenes (Dockerhub u otros)
-                    sh 'docker login -u guillermovertz -p Tecnica1239'
+                    // sh 'docker login -u guillermovertz -p Tecnica1239'
+                    sh 'echo 'Tecnica1239' | docker login -u guillermovertz --password-stdin'
                     sh 'docker push guillermovertz/httpd:latest'
                 }
             }
