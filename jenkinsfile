@@ -17,7 +17,7 @@ pipeline {
             steps {
                 script {
                     // Paso b) Ejecución de un contenedor usando esa imagen
-                    sh 'docker run -d --name m15-jenkins -p 8081:80 guillermovertz/httpd-m15:latest'
+                    sh 'docker run -d --name m15-jenkins1 -p 8081:80 guillermovertz/httpd-m15:latest'
                 }
             }
         }
