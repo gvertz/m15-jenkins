@@ -31,6 +31,7 @@ pipeline {
                     sh 'docker login -u guillermovertz -p Tecnica1239'
                     // sh 'echo 'Tecnica1239' | docker login -u guillermovertz --password-stdin'
                     sh 'docker push guillermovertz/httpd:latest'
+                    sh 'whoami'
                 }
             }
         }
